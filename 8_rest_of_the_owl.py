@@ -40,7 +40,7 @@ flask_app = Flask(__name__)
 
 # join the test channel so you can listen to messages
 channel_list = app.client.conversations_list().data
-channel = next((channel for channel in channel_list.get('channels') if channel.get("name") == "bot-testing"), None)
+channel = next((channel for channel in channel_list.get('channels') if channel.get("name") == "bot-testing-public"), None)
 channel_id = channel.get('id')
 app.client.conversations_join(channel=channel_id)
 
