@@ -78,9 +78,9 @@ def answer_question(query, message, replies=None):
         "You are a helpful AI assistant who has been listening to everything everyone has been saying. \n"
         "Given the most relevant chat messages above, please answer this question: {query_str}\n"
     )
-    qa_template = PromptTemplate(template)                                
+    qa_template = PromptTemplate(template)
     postprocessor = FixedRecencyPostprocessor(
-        top_k=20, 
+        top_k=20,
         date_key="when", # the key in the metadata to find the date
         service_context=ServiceContext.from_defaults()
     )
@@ -111,14 +111,14 @@ def reply(message, say):
     global PREVIOUS_NODE
     # if message contains a "blocks" key
     #   then look for a "block" with the type "rich text"
-    #       if you find it 
+    #       if you find it
     #       then look inside that block for an "elements" key
-    #           if you find it 
+    #           if you find it
     #               then examine each one of those for an "elements" key
     #               if you find it
     #                   then look inside each "element" for one with type "user"
-    #                   if you find it  
-    #                   and if that user matches the bot_user_id 
+    #                   if you find it
+    #                   and if that user matches the bot_user_id
     #                   then it's a message for the bot
     if message.get('blocks'):
         for block in message.get('blocks'):

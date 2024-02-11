@@ -15,7 +15,7 @@ This is the most complicated step, because Slack is very picky about permissions
 
 The very first version of your Slackbot is going to be only about 20 lines of code. All it does is provide a "challenge" endpoint that Slack needs to verify your app is available. You can see this code as the file `1_flask.py` in the repo. Let's walk through it.
 
-First we bring in your dependencies. You'll need to install these with pip or poetry if you don't have them already. 
+First we bring in your dependencies. You'll need to install these with pip or poetry if you don't have them already.
 
 ```python
 from flask import Flask, request, jsonify
@@ -132,7 +132,7 @@ To listen to messages, the bot has to be in a channel. You can get it to join an
 
 ```python
 channel_list = app.client.conversations_list().data
-channel = next((channel for channel in channel_list.get('channels') if channel.get("name") == "bot-testing"), None)
+channel = next((channel for channel in channel_list.get('channels') if channel.get("name") == "bot-testing-public"), None)
 channel_id = channel.get('id')
 app.client.conversations_join(channel=channel_id)
 print(f"Found the channel {channel_id} and joined it")
@@ -326,7 +326,7 @@ node = TextNode(
 index.insert_nodes([node])
 ```
 
-I've also factored out the reply logic from message handling into its own function, `answer_question`, just to make things a little easier to read. The first thing we're going to change is the prompt that we give to our LLM: we have to tell it that more recent messages are important. To do this we create a prompt template: 
+I've also factored out the reply logic from message handling into its own function, `answer_question`, just to make things a little easier to read. The first thing we're going to change is the prompt that we give to our LLM: we have to tell it that more recent messages are important. To do this we create a prompt template:
 
 ```python
 template = (
@@ -341,7 +341,7 @@ template = (
     "You are a helpful AI assistant who has been listening to everything everyone has been saying. \n"
     "Given the most relevant chat messages above, please answer this question: {query_str}\n"
 )
-qa_template = PromptTemplate(template)                                
+qa_template = PromptTemplate(template)
 ```
 
 The fun thing about working with LLMs is how often you end up just describing what you're doing in English and that being what you send to the LLM. A prompt template will automatically get the `context_str` and `query_str` from the query engine. But we have to set this template on our query engine, like so:
@@ -356,7 +356,7 @@ Now there's two more things we're going to change. We're going to take the resul
 
 ```python
 postprocessor = FixedRecencyPostprocessor(
-    top_k=20, 
+    top_k=20,
     date_key="when", # the key in the metadata to find the date
     service_context=ServiceContext.from_defaults()
 )
